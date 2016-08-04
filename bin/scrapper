@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+Scrapper = require ("../exec.js");
+var fs = require("fs");
+if(process.argv.indexOf("-f") === -1){ 
+    console.log("Usage: scrapper -f <config filename>");
+    process.exit();
+}
+var configFile = process.cwd() + "/" + process.argv[process.argv.indexOf("-f") + 1];
+
+fs.stat(configFile, function (err, stats) {
+    if (!err && stats.isFile()) {
+        var config = require(configFile);
+        console.log(config);
+        (new Scrapper(config)).execute();
+    } else {
+        console.log("No config file found");
+    }
+});
+
